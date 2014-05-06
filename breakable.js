@@ -1,32 +1,32 @@
 // breakable.js
 // MIT licensed, see LICENSE file
-// Copyright (c) 2013 Olov Lassus <olov.lassus@gmail.com>
+// Copyright (c) 2013-2014 Olov Lassus <olov.lassus@gmail.com>
 
 var breakable = (function() {
     "use strict";
 
-    function Val(val) {
+    function Val(val, id) {
         this.val = val;
+        this.id = id;
     }
 
-    function brk(val) {
-        throw new Val(val);
+    function make_brk(id) {
+        return function brk(val) {
+            throw new Val(val, id);
+        };
     }
 
     function breakable(fn) {
+        var id = {};
         try {
-            return fn(brk);
+            return fn(make_brk(id));
         } catch (e) {
-            if (e instanceof Val) {
+            if (e instanceof Val && e.id === id) {
                 return e.val;
             }
             throw e;
         }
     }
-
-    breakable.fn = function breakablefn(fn) {
-        return breakable.bind(null, fn);
-    };
 
     return breakable;
 })();
