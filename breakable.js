@@ -5,23 +5,23 @@
 var breakable = (function() {
     "use strict";
 
-    function Val(val, id) {
+    function Val(val, brk) {
         this.val = val;
-        this.id = id;
+        this.brk = brk;
     }
 
-    function make_brk(id) {
+    function make_brk() {
         return function brk(val) {
-            throw new Val(val, id);
+            throw new Val(val, brk);
         };
     }
 
     function breakable(fn) {
-        var id = {};
+        var brk = make_brk();
         try {
-            return fn(make_brk(id));
+            return fn(brk);
         } catch (e) {
-            if (e instanceof Val && e.id === id) {
+            if (e instanceof Val && e.brk === brk) {
                 return e.val;
             }
             throw e;
