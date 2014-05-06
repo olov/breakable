@@ -1,6 +1,6 @@
 {
   "name": "breakable",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "Break out of functions, recursive or not, in a more composable way than by using exceptions explicitly. Non-local return.",
   "main": "breakable.js",
   "repository": {
